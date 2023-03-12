@@ -16,9 +16,7 @@ int main(int argc , char *argv[])
     if (SFD == -1)
     {
         printf("Error creating socket");
-    } {
-    	printf("socket created");
-    } 
+    }
     
     // set sockaddr_in variables
     server.sin_port = htons( 8082 ); // Port to connect on
@@ -33,7 +31,7 @@ int main(int argc , char *argv[])
         return 1;
     }
      
-    printf("Connected to server ok!!\n");
+    printf("Server connection successfully..............\n");
      
     //keep communicating with server
     while(1)

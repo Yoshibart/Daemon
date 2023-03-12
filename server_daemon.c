@@ -4,7 +4,10 @@
 #include<sys/socket.h> // for socket
 #include<arpa/inet.h>  //for inet_addr
 #include<unistd.h>     //for write
- 
+#include <pthread.h>
+
+void *handle_client(void *);
+
 int main(int argc , char *argv[])
 {
     int s; // socket descriptor
@@ -21,7 +24,7 @@ int main(int argc , char *argv[])
     {
         printf("Could not create socket");
     } else {
-    	printf("Socket Successfully Created!!");
+        printf("Socket Successfully Created!!");
     } 
 
     // set sockaddr_in variables
@@ -37,54 +40,58 @@ int main(int argc , char *argv[])
         perror("Bind issue!!");
         return 1;
     } else {
-    	printf("Bind Complete!!");
+        printf("Bind Complete!!");
     }
      
     //Listen for a conection
-    listen(s,3); 
+    listen(s,5); 
+
     //Accept and incoming connection
-    printf("Waiting for incoming connection from Client>>");
+    printf("Waiting for incoming client connections.................");
     connSize = sizeof(struct sockaddr_in);
-     
-    //accept connection from an incoming client
-    cs = accept(s, (struct sockaddr *)&client, (socklen_t*)&connSize);
-    if (cs < 0)
-    {
-        perror("Can't establish connection");
-        return 1;
-    } else {
-    	printf("Connection from client accepted!!");
-    }
-     
-    //Receive message from client
-    /*while( (READSIZE = recv(cs , message , 1999 , 0)) > 0 )
-    {
-        //Send the message back to client
-        write(cs , message , strlen(message));
-    }*/
+
     while(1) {
+        cs = accept(s, (struct sockaddr *)&client, (socklen_t*)&connSize);
+        if (cs < 0)
+        {
+            perror("Can't establish connection");
+            continue;
+        } else {
+            printf("Connection from client accepted!!\n");
+        }
+
+        pthread_t thread;
+        int *new_sock = malloc(sizeof(int));
+        *new_sock = cs;
+        if (pthread_create(&thread, NULL, handle_client, (void*) new_sock) < 0) {
+            perror("Could not create thread");
+            return 1;
+        } else {
+            printf("Thread created for client\n");
+        }
+    }
+    return 0;
+}
+
+void *handle_client(void *sock_ptr) {
+    int sock = *(int*)sock_ptr;
+    int read_size;
+    char message[500];
+    memset(message, 0, 500);
+    while ((read_size = recv(sock , message , 2000 , 0)) > 0 ) {
+        printf("Client %d said: %s\n", sock, message);
+        float num = atof(message) * (9.0/5) + 32.0;
+        char mess[500];
+        sprintf(mess, "%.2f Fahrenheit", num);
+        write(sock, mess, strlen(mess));
         memset(message, 0, 500);
-	//READSIZE = read(cs,message,500);
-	READSIZE = recv(cs , message , 2000 , 0);
-        printf("Client said: %s\n", message);
-        //puts(message);
-    float num = atof(message) * (9.0/5) + 32.0;
-    char mess[500];
-
-    sprintf(mess, "%s Celsius = %.2f Fahrenheit", message, num);
-
-	write(cs, mess, strlen(mess));
     }
- 
-    if(READSIZE == 0)
-    {
-        puts("Client disconnected");
-        fflush(stdout);
-    }
-    else if(READSIZE == -1)
-    {
+    if (read_size == 0) {
+        printf("Client %d disconnected\n", sock);
+    } else if (read_size == -1) {
         perror("read error");
     }
-     
-    return 0;
+    free(sock_ptr);
+    close(sock);
+    pthread_exit(NULL);
 }
