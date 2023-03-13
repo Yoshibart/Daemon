@@ -75,6 +75,7 @@ int main(int argc , char *argv[])
 
 void *handle_client(void *sock_ptr) {
     int sock = *(int*)sock_ptr;
+    char name[100] = {'\0'};
     int read_size;
     char message[500];
     memset(message, 0, 500);
