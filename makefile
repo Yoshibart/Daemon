@@ -9,7 +9,7 @@ client : client_daemon.o
 	$(CC) -o client client_daemon.o
 
 server : server_daemon.o
-	$(CC) -o server server_daemon.o
+	$(CC) -o server server_daemon.o -lpthread
 
 client_daemon.o : client_daemon.c
 	$(CC) -c client_daemon.c

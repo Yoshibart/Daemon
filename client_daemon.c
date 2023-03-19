@@ -57,7 +57,7 @@ int main(int argc , char *argv[])
          
         if( send(SFD , option , strlen(option) + 1, 0) < 0)
         {
-            printf("Sending name failed.");
+            printf("Sending option failed.");
         }
 
     }

@@ -38,4 +38,73 @@ Waiting for incoming client connections.................
 Client connection established!!
 
 Thread created for client
- has been disconnected
+ has been disconnectedBind issue!!: Address already in use
+
+
+Socket Successfully Created!!
+
+Socket Successfully Created!!
+
+Bind Complete!!
+
+Waiting for incoming client connections.................
+
+Client connection established!!
+
+Thread created for client
+
+Socket Successfully Created!!
+
+Bind Complete!!
+
+Waiting for incoming client connections.................
+
+Client connection established!!
+
+Thread created for client
+
+Parent process
+
+Socket Successfully Created!!
+
+Bind Complete!!
+
+Waiting for incoming client connections.................
+
+Client connection established!!
+
+Thread created for client
+
+Socket Successfully Created!!
+
+Bind Complete!!
+
+Waiting for incoming client connections.................
+
+Client connection established!!
+
+Thread created for client
+
+Parent process
+
+Socket Successfully Created!!
+
+Bind Complete!!
+
+Waiting for incoming client connections.................
+
+Client connection established!!
+
+Thread created for client
+
+Socket Successfully Created!!
+
+Bind Complete!!
+
+Waiting for incoming client connections.................
+
+Client connection established!!
+
+Thread created for client
+
+Parent process
